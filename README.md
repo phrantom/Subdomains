@@ -194,8 +194,20 @@ GO111MODULE=on go get -u github.com/jaeles-project/gospider
 ```
 
 ### FavFreak
-```
+  ```
 git clone https://github.com/devanshbatham/FavFreak
 cd FavFreak
 pip install -r requirements.txt
+```
+## Instalacion
+```
+cd ~/Tools/Recon
+git clone https://github.com/phrantom/Subdomains.git
+cd Subdomains
+
+```
+Crear enlace simbolico para ejecutarlo desde cualquier ubicacion
+
+```
+sudo ln -s ~/Tools/Recon/Subdomains/Subdomains.sh /usr/bin/Subdomain.sh
 ```
