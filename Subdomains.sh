@@ -186,7 +186,7 @@ Tool_github-subdomains(){
 Tool_shuffledns(){
     echo -e "${greenColour}[+] ${endColour}Shuffledns ..."
     ARCHIVO=".Sub-shuffledns_$(date +%Y%m%d%H%M).txt" 
-    shuffledns -d $DOMINIO -w "$HOME/Tools/Wordlist/SecLists/Discovery/DNS/subdomains-top1million-5000.txt" -r '$HOME/Tools/Wordlist/SecLists/Miscellaneous/dns-resolvers.txt' -o $ARCHIVO -v
+    shuffledns -d $DOMINIO -w $HOME/Tools/Wordlist/SecLists/Discovery/DNS/subdomains-top1million-5000.txt -r $HOME/Tools/Wordlist/SecLists/Miscellaneous/dns-resolvers.txt -o $ARCHIVO -v
     echo "| $(date +'%d/%m/%Y %R') | Shuffledns |$(wc -l $ARCHIVO | cut -d' ' -f1)| " >> $STATUS_FILE
     ARCHIVO=""
     sleep $TIEMPO
@@ -280,7 +280,7 @@ Tool_gospider(){
 Tool_favfreak(){
     echo -e "${greenColour}[+] ${endColour}Favfreak ..."
     ARCHIVO=".Sub-favfreak_$(date +%Y%m%d%H%M).txt" 
-    cat alive.txt | python3 /home/phr4nt0m/Tools/Recon/FavFreak/favfreak.py | tee .favfrek.tmp
+    cat alive.txt | python3 $HOME/Tools/Recon/FavFreak/favfreak.py | tee .favfrek.tmp
     sleep $TIEMPO
     cat .favfrek.tmp | cut -d"'" -f 2| grep $DOMINIO | cut -d "/" -f 3 | cut -d ":" -f 1 | sort -u  > $ARCHIVO
     rm .favfrek.tmp
