@@ -215,8 +215,8 @@ Tool_rapiddns(){
 ## Archive.org
 Tool_archive.org(){
     echo -e "${greenColour}[+] ${endColour}Archive.org ..."
-    ARCHIVO=".Sub-archive.org_$(date +%Y%m%d%H%M).txt" 
-    curl -s "http://web.archive.org/cdx/search/cdx?url=*.$DOMINIO/*&output=text&fl=original&collapse=urlkey"  | sed -e 's_http*://__' -e "s/\/.*//" | sort -u | tee -a $ARCHIVO
+    ARCHIVO=".Sub-archive.org_$(date +%Y%m%d%H%M).txt
+    curl -s "http://web.archive.org/cdx/search/cdx?url=*.$DOMINIO/*&output=text&fl=original&collapse=urlkey"  | sed -e 's_http*://__' -e "s/\/.*//" | cut -d ":" -f1-2 |sort -u | tee -a $ARCHIVO
     echo "| $(date +'%d/%m/%Y %R') | archive.org |$(wc -l $ARCHIVO | cut -d' ' -f1)| " >> $STATUS_FILE
     ARCHIVO=""
     sleep $TIEMPO
@@ -261,16 +261,18 @@ Tool_gospider(){
     sleep $TIEMPO
     # Reorganizando la salida
     # Urls
-    cat gospider/* | grep "\[url\]" | cut -d"-" -f 4-20| grep $DOMINIO | sort -u | tee $ARCHIVO
+    cat gospider/* | grep "\[url\]" | cut -d"-" -f 4-20| grep $DOMINIO | cut -d "/" -f1-3 | cut -d ":" -f1-2 | sort -u | tee $ARCHIVO
     # linkfinder
-    cat gospider/* | grep "\[linkfinder\]" | grep $DOMINIO | cut -d "-" -f 2-20 | tee -a $ARCHIVO
-    cat gospider/* | grep "\[robots\]" | grep $DOMINIO | cut -d"-" -f 2-10| sort -u | tee -a $ARCHIVO
+    cat gospider/* | grep "\[linkfinder\]" | grep $DOMINIO | cut -d "-" -f 2-20 | cut -d ":" -f1-2 |sort -u| tee -a $ARCHIVO
+    cat gospider/* | grep "\[robots\]" | grep $DOMINIO | cut -d"-" -f 2-10 | cut -d ":" -f1-2 | sort -u | tee -a $ARCHIVO
     # form
-    cat gospider/* | grep "\[form\]" | grep $DOMINIO | cut -d"-" -f 2-10| sort -u | tee -a $ARCHIVO
+    cat gospider/* | grep "\[form\]" | grep $DOMINIO | cut -d"-" -f 2-10| cut -d ":" -f1-2 | sort -u | tee -a $ARCHIVO
+    # all javascript files
+    cat gospider/* | grep "\[javascript\]" | cut -d"-" -f 2-20 | cut -d ":" -f1-2 | sort -u | tee JS-Gospider.txt
+
     # Ordena la lista eliminado repetidos
     sort -u $ARCHIVO -o .gospider.tmp ; mv .gospider.tmp $ARCHIVO
-    # all javascript files
-    cat gospider/* | grep "\[javascript\]" | cut -d"-" -f 2-20 | sort -u | tee JS-Gospider.txt
+    
     echo "| $(date +'%d/%m/%Y %R') | Gospider |$(wc -l $ARCHIVO | cut -d' ' -f1) | " >> $STATUS_FILE
     ARCHIVO=""
     sleep $TIEMPO
