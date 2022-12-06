@@ -215,7 +215,7 @@ Tool_rapiddns(){
 ## Archive.org
 Tool_archive.org(){
     echo -e "${greenColour}[+] ${endColour}Archive.org ..."
-    ARCHIVO=".Sub-archive.org_$(date +%Y%m%d%H%M).txt
+    ARCHIVO=".Sub-archive.org_$(date +%Y%m%d%H%M).txt"
     curl -s "http://web.archive.org/cdx/search/cdx?url=*.$DOMINIO/*&output=text&fl=original&collapse=urlkey"  | sed -e 's_http*://__' -e "s/\/.*//" | cut -d ":" -f1-2 |sort -u | tee -a $ARCHIVO
     echo "| $(date +'%d/%m/%Y %R') | archive.org |$(wc -l $ARCHIVO | cut -d' ' -f1)| " >> $STATUS_FILE
     ARCHIVO=""
